@@ -22,6 +22,7 @@ def get_words(f: str, letters: List[str]) -> List[str]:
     """
     Reads the file f. Checks the words with rules and returns a list of words.
     """
+    print(letters)
     good_words = []
     main_letter = letters[4]
     with open(f, "r", encoding="utf-8") as dictionary:
@@ -29,10 +30,12 @@ def get_words(f: str, letters: List[str]) -> List[str]:
         for i in range(3, len(lines)):
             lines[i] = lines[i].lower().strip()
             if (main_letter in lines[i]) and len(lines[i]) >= 4:
+                check = 1
                 for letter in lines[i]:
-                    if not letter in letters or lines[i].count(letter) > letters.count(letter):
-                        break
-                good_words.append(lines[i])
+                    if (letter not in letters) or lines[i].count(letter) > letters.count(letter):
+                        check = 0
+                if check == 1:
+                    good_words.append(lines[i])
     return good_words
 
 
@@ -63,4 +66,4 @@ for i in range(3):
 for i, letter in enumerate(letters_end):
     letters_end[i] = letter.lower()
 print(letters_end)
-print(get_words("en.txt", letters_end))
+print(get_words("en.txt", [el for el in 'jniarnoah']))
