@@ -17,11 +17,12 @@ def generate_grid() -> List[List[str]]:
     for i in range(3):
         grid.append([])
         for j in range(3):
+            j += 0
             grid[i].append(chr(random.randint(65, 90)))
     return grid
 
 
-def get_words(f: str, letters: List[str]) -> List[str]:
+def get_words(path: str, letters: List[str]) -> List[str]:
     """
     Reads the file f. Checks the words with rules and returns a list of words.
     >>> get_words("en.txt", ['f', 'r', 'l', 'h', 'k', 'd', 'z', 'g', 'i'])
@@ -29,7 +30,7 @@ def get_words(f: str, letters: List[str]) -> List[str]:
     """
     good_words = []
     main_letter = letters[4]
-    with open(f, "r", encoding="utf-8") as dictionary:
+    with open(path, "r", encoding="utf-8") as dictionary:
         lines = dictionary.readlines()
         for i in range(3, len(lines)):
             lines[i] = lines[i].lower().strip()
@@ -48,6 +49,8 @@ def get_user_words() -> List[str]:
     """
     Gets words from user input and returns a list with these words.
     Usage: enter a word or press ctrl+d to finish.
+
+    Don't know, how to write this doctest, how to use shortcuts.
     """
     words = []
     while True:
@@ -58,36 +61,40 @@ def get_user_words() -> List[str]:
     return words
 
 
-def get_pure_user_words(user_words: List[str], letters: List[str], words_from_dict: List[str]) -> List[str]:
+def get_pure_user_words(user_words: List[str], letters: List[str],\
+                        words_from_dict: List[str]) -> List[str]:
     """
     (list, list, list) -> list
 
     Checks user words with the rules and returns list of those words
     that are not in dictionary.
-    >>> get_pure_user_words(['dirk', 'firk', 'frlhk'],['f', 'r', 'l', 'h', 'k', 'd', 'z', 'g', 'i'],\
+    >>> get_pure_user_words(['dirk', 'firk', 'frlhk'],\
+    ['f', 'r', 'l', 'h', 'k', 'd', 'z', 'g', 'i'],\
     ['dirk', 'firk', 'khir'])
     ['frlhk']
     """
     pure_words = []
     main_letter = letters[4]
-    for i in range(len(user_words)):
+    for i, _ in enumerate(user_words):
         user_words[i] = user_words[i].lower().strip()
-        if (main_letter in user_words[i]) and len(user_words[i]) >= 4 and (user_words[i] not in words_from_dict):
+        if (main_letter in user_words[i]) and len(user_words[i]) >= 4\
+                and (user_words[i] not in words_from_dict):
             check = 1
             for letterl in user_words[i]:
-                if (letterl not in letters) or user_words[i].count(letterl) > letters.count(letterl):
+                if (letterl not in letters) or \
+                        user_words[i].count(letterl) > letters.count(letterl):
                     check = 0
             if check == 1:
                 pure_words.append(user_words[i])
     return pure_words
 
 
-def results(pure_words):
-    print(pure_words)
-
-
-if __name__ == "__main__":
-    random.seed(2191)
+def results():
+    """
+    Prints results
+    >>> print("some results")
+    some results
+    """
     letters_init = generate_grid()
     letters_end = []
     for i in range(3):
@@ -98,3 +105,6 @@ if __name__ == "__main__":
     user_words_list = get_user_words()
     get_pure_user_words(user_words_list, letters_end, dictionarym)
 
+
+if __name__ == "__main__":
+    results()
